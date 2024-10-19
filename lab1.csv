@@ -1,0 +1,97 @@
+using System;
+using System.Collections.Generic;
+
+class Employee
+{
+    public string Name { get; set; }
+    public int EmployeeID { get; set; }
+    public string Position { get; set; }
+
+    public Employee(string name, int employeeID, string position)
+    {
+        Name = name;
+        EmployeeID = employeeID;
+        Position = position;
+    }
+
+    public virtual decimal CalculateSalary()
+    {
+        return 0;
+    }
+
+    public virtual void DisplayInfo()
+    {
+        Console.WriteLine($"Имя: {Name}, ID: {EmployeeID}, Должность: {Position}");
+    }
+}
+
+// Class WORKER
+class Worker : Employee
+{
+    public decimal HourlyRate { get; set; }
+    public int HoursWorked { get; set; }
+
+    public Worker(string name, int employeeID, decimal hourlyRate, int hoursWorked)
+        : base(name, employeeID, "Рабочий")
+    {
+        HourlyRate = hourlyRate;
+        HoursWorked = hoursWorked;
+    }
+
+    public override decimal CalculateSalary()
+    {
+        return HourlyRate * HoursWorked;
+    }
+
+    public override void DisplayInfo()
+    {
+        base.DisplayInfo();
+        Console.WriteLine($"Ставка за час: {HourlyRate}, Отработанные часы: {HoursWorked}, Зарплата: {CalculateSalary()}");
+    }
+}
+
+//Class Manager
+class Manager : Employee
+{
+    public decimal FixedSalary { get; set; }
+    public decimal Bonus { get; set; }
+
+    public Manager(string name, int employeeID, decimal fixedSalary, decimal bonus)
+        : base(name, employeeID, "Менеджер")
+    {
+        FixedSalary = fixedSalary;
+        Bonus = bonus;
+    }
+
+    public override decimal CalculateSalary()
+    {
+        return FixedSalary + Bonus;
+    }
+
+    public override void DisplayInfo()
+    {
+        base.DisplayInfo();
+        Console.WriteLine($"Фиксированная зарплата: {FixedSalary}, Премия: {Bonus}, Общая зарплата: {CalculateSalary()}");
+    }
+}
+
+// Main
+class Program
+{
+    static void Main(string[] args)
+    {
+
+        List<Employee> employees = new List<Employee>();
+
+        employees.Add(new Worker("Иван", 101, 150, 160));
+        employees.Add(new Worker("Мария", 102, 180, 170));
+        employees.Add(new Manager("Олег", 201, 50000, 10000));
+        employees.Add(new Manager("Анна", 202, 60000, 15000));
+
+        foreach (var employee in employees)
+        {
+            employee.DisplayInfo();
+            Console.WriteLine();
+        }
+    }
+}
